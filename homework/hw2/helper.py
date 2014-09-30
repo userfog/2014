@@ -70,16 +70,16 @@ sampleinfo["elapsedInDays"] = sampleinfo["date"].map(sinceOctober2002)
 # Problem 1d
 # part 1
 sampleinfo = sampleinfo.reset_index()
-helperCEU = set(sampleinfo["ethnicity"].str.contains("CEU"))
-sampleinfoCEU = copy.deepcopy(sampleinfo[sampleinfo["ethnicity"].str.contains("CEU")])
+sampleinfoCEU = sampleinfo[sampleinfo["ethnicity"].str.contains("CEU")]
 #part 2
 exprsCEU = pd.DataFrame()
-for col in exprs.columns:
-	if not col in helperCEU:
-		continue
-	exprs[col].append(copy.deepcopy(exprs[col]))
+for col in sampleinfoCEU["filename"]:
+	exprsCEU[col] = exprs[col]
+#part 3
+(exprsCEU.columns == sampleinfoCEU["filename"]).all()
 
-pp.pprint(exprs.head())
+
+
 
 
 
