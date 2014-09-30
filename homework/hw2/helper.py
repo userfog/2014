@@ -1,6 +1,7 @@
 # special IPython command to prepare the notebook for matplotlib
 # %matplotlib inline 
 import os
+import copy
 import sys
 import subprocess
 import requests 
@@ -13,9 +14,18 @@ import StringIO
 import datetime as dt # module for manipulating dates and times
 import numpy.linalg as lin # module for performing linear algebra operations
 import pprint
+import datetime as dt
 pp = pprint.PrettyPrinter(indent=4)
 
+oct31 = dt.datetime.strptime("31/10/2002", "%d/%m/%Y")
 LOCAL = True
+
+def sinceOctober2002(date):
+	# print date
+	time = dt.datetime.strptime(date, "%m/%d/%y")
+	delt = time - oct31
+	return delt.days
+
 
 class getDataFrame():
 	def __init__(self, local, name):
@@ -54,6 +64,23 @@ sampleinfo = getDataFrame(LOCAL,smpl_name).df
 sampleinfo.sort(["filename"], inplace=True)
 ordered = sorted(exprs.columns.tolist())
 exprs = exprs[ordered]
+#Problem 1c
+sampleinfo["elapsedInDays"] = sampleinfo["date"].map(sinceOctober2002)
+# pp.pprint(sampleinfo.head())
+# Problem 1d
+# part 1
+sampleinfo = sampleinfo.reset_index()
+helperCEU = set(sampleinfo["ethnicity"].str.contains("CEU"))
+sampleinfoCEU = copy.deepcopy(sampleinfo[sampleinfo["ethnicity"].str.contains("CEU")])
+#part 2
+exprsCEU = pd.DataFrame()
+for col in exprs.columns:
+	if not col in helperCEU:
+		continue
+	exprs[col].append(copy.deepcopy(exprs[col]))
+
+pp.pprint(exprs.head())
+
 
 
 
