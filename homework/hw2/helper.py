@@ -13,6 +13,7 @@ import zipfile
 import StringIO
 import datetime as dt # module for manipulating dates and times
 import numpy.linalg as lin # module for performing linear algebra operations
+import scipy
 import pprint
 import datetime as dt
 pp = pprint.PrettyPrinter(indent=4)
@@ -71,12 +72,38 @@ sampleinfo["elapsedInDays"] = sampleinfo["date"].map(sinceOctober2002)
 # part 1
 sampleinfo = sampleinfo.reset_index()
 sampleinfoCEU = sampleinfo[sampleinfo["ethnicity"].str.contains("CEU")]
+pp.pprint(sampleinfoCEU.head())
 #part 2
 exprsCEU = pd.DataFrame()
 for col in sampleinfoCEU["filename"]:
 	exprsCEU[col] = exprs[col]
-#part 3
+
+# part 3
 (exprsCEU.columns == sampleinfoCEU["filename"]).all()
+# part 4
+# deviations = lambda x: np.fabs((x-x.mean())/x.std())
+deviations = lambda x: (x-x.mean())
+exprsCEU = exprsCEU.apply(deviations)
+print exprsCEU.head()
+# part 5
+U, s, Vh = np.linalg.svd(exprsCEU)
+V = Vh.T
+
+# #part 5
+plt.hist(V[:,0:1], bins=25)
+plt.show()
+
+# part 6
+f, (ax1) = plt.subplots(ncols=1)
+ax1.scatter(sampleinfoCEU["elapsedInDays"], V[:,0:1])
+# f.tight_layout()
+f.show()
+x = raw_input()
+
+# It looks like around the 200th day of the sample the results for the group
+# stop being similar.
+
+
 
 
 
