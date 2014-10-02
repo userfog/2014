@@ -37,9 +37,12 @@ five_days = elections[elections["Start Date"] >= dt.datetime.strptime("2012-11-1
 # plt.plot(np.array(five_days["Start Date"]), np.array(five_days["Diff"]), "ro")
 # plt.gcf().autofmt_xdate()
 # plt.show()
+ten_days = elections[elections["Start Date"] >= dt.datetime.strptime("2012-11-1", "%Y-%m-%d").date()- dt.timedelta(days=5)]
+ten_days = ten_days.reset_index()
+# plotter = ten_days[["Pollster", "Diff"]]
+# plotter.boxplot(by="Pollster", rot=45)
+# plt.show()
 
-elections = elections.reset_index()
-plotter = elections[["Pollster", "Diff"]]
-plotter.boxplot(by="Pollster", rot=45)
-plt.show()
-
+ten_days = ten_days.groupby("Pollster")
+ten_days = ten_days.mean()
+print ten_days["Diff"].mean()
