@@ -32,11 +32,11 @@ elections["Start Date"] = date
 # https://stackoverflow.com/questions/9627686/plotting-dates-on-the-x-axis-with-pythons-matplotlib
 five_days = elections[elections["Start Date"] >= dt.datetime.strptime("2012-11-1", "%Y-%m-%d").date()]
 
-# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
-# plt.gca().xaxis.set_major_locator(mdates.DayLocator())
-# plt.plot(np.array(five_days["Start Date"]), np.array(five_days["Diff"]), "ro")
-# plt.gcf().autofmt_xdate()
-# plt.show()
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+plt.plot(np.array(five_days["Start Date"]), np.array(five_days["Diff"]), "ro")
+plt.gcf().autofmt_xdate()
+plt.show()
 ten_days = elections[elections["Start Date"] >= dt.datetime.strptime("2012-11-1", "%Y-%m-%d").date()- dt.timedelta(days=5)]
 ten_days = ten_days.reset_index()
 # plotter = ten_days[["Pollster", "Diff"]]

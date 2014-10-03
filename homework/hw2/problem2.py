@@ -34,15 +34,15 @@ date_time = elections["Start Date"].apply(convert)
 elections["Start Date"] = date_time
 inNovember = elections[elections["Start Date"] >= novemberFirst]
 pp.pprint(inNovember.count())
-med = inNovember["Number of Observations"].median()
-pp.pprint(med)
+N = inNovember["Number of Observations"].median()
+pp.pprint(N)
 
-samp = np.random.binomial(med, .53)
+samp = np.random.binomial(N, .53)
 
 samps = []
 for i in xrange(0,1000):
-    samp = np.random.binomial(med, .53)
-    samps.append(samp/float(med))
+    samp = np.random.binomial(N, .53)
+    samps.append(samp/float(N))
 npSamps = np.asarray(samps)
 
 # plt.hist(map(lambda x: x*100,npSamps))
@@ -55,7 +55,7 @@ stds = []
 for i in xrange(0,1000):
     generation = []
     for j in xrange(0,inNovember.count()[0]):
-        generation.append(np.random.binomial(med, .53)/float(med))
+        generation.append(np.random.binomial(N, .53)/float(N))
     means.append(np.mean(np.array(generation)))
     stds.append(np.array(generation).std())
 
@@ -86,7 +86,7 @@ pp.pprint(actual_std/np.array(stds_100).mean())
 
 
 
-
+	
 
 
 
